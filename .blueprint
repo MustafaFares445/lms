@@ -1,0 +1,58 @@
+created:
+    - database/factories/StudentFactory.php
+    - database/factories/TeacherFactory.php
+    - database/factories/CourseFactory.php
+    - database/factories/CourseStudentFactory.php
+    - database/factories/CourseTeacherFactory.php
+    - database/factories/CodeFactory.php
+    - database/factories/SavedCourseFactory.php
+    - database/factories/LectureFactory.php
+    - database/factories/SubjectFactory.php
+    - database/factories/QuizFactory.php
+    - database/factories/QuestionFactory.php
+    - database/factories/AnswerFactory.php
+    - database/factories/StudentQuizFactory.php
+    - database/factories/StudentQuizAnswerFactory.php
+    - database/migrations/2025_04_25_081452_create_students_table.php
+    - database/migrations/2025_04_25_081453_create_teachers_table.php
+    - database/migrations/2025_04_25_081454_create_courses_table.php
+    - database/migrations/2025_04_25_081455_create_course_students_table.php
+    - database/migrations/2025_04_25_081456_create_course_teachers_table.php
+    - database/migrations/2025_04_25_081457_create_codes_table.php
+    - database/migrations/2025_04_25_081458_create_saved_courses_table.php
+    - database/migrations/2025_04_25_081459_create_lectures_table.php
+    - database/migrations/2025_04_25_081500_create_subjects_table.php
+    - database/migrations/2025_04_25_081501_create_quizzes_table.php
+    - database/migrations/2025_04_25_081502_create_questions_table.php
+    - database/migrations/2025_04_25_081503_create_answers_table.php
+    - database/migrations/2025_04_25_081504_create_student_quizzes_table.php
+    - database/migrations/2025_04_25_081505_create_student_quiz_answers_table.php
+    - app/Models/Student.php
+    - app/Models/Teacher.php
+    - app/Models/Course.php
+    - app/Models/CourseStudent.php
+    - app/Models/CourseTeacher.php
+    - app/Models/Code.php
+    - app/Models/SavedCourse.php
+    - app/Models/Lecture.php
+    - app/Models/Subject.php
+    - app/Models/Quiz.php
+    - app/Models/Question.php
+    - app/Models/Answer.php
+    - app/Models/StudentQuiz.php
+    - app/Models/StudentQuizAnswer.php
+models:
+    Student: { id: id, user_id: 'bigInteger index foreign:users.id', first_name: string, last_name: string, phone: 'string nullable index', email: 'string nullable unique', student_number: 'string unique index' }
+    Teacher: { id: id, user_id: 'bigInteger index foreign:users.id', first_name: string, last_name: string, phone: 'string unique', description: longText }
+    Course: { id: id, name: 'string unique', summary: 'text nullable', description: 'longText nullable', duration: 'float default:0', likes: 'bigInteger unsigned default:0 index', dislikes: 'bigInteger unsigned default:0 index', end_date: 'dateTime nullable', year: 'smallInteger index', section: 'smallInteger index', subject_id: 'bigInteger index foreign:subjects.id' }
+    CourseStudent: { id: false, student_id: 'bigInteger foreign:students.id', course_id: 'bigInteger foreign:courses.id', quizez_percent: 'smallInteger unsigned default:0', lectures_percent: 'smallInteger unsigned default:0', indexes: [[student_id, course_id], [course_id, student_id]] }
+    CourseTeacher: { id: false, teacher_id: 'bigInteger foreign:teachers.id', course_id: 'bigInteger foreign:courses.id', indexes: [[teacher_id, course_id], [course_id, teacher_id]] }
+    Code: { id: id, code: 'string unique', student_id: 'bigInteger index nullable foreign:students.id', course_id: 'bigInteger index foreign:courses.id', indexes: [[student_id, course_id]] }
+    SavedCourse: { id: false, student_id: 'bigInteger foreign:students.id', course_id: 'bigInteger foreign:courses.id', indexes: [[student_id, course_id]] }
+    Lecture: { id: id, name: string, notes: 'longText nullable', course_id: 'bigInteger index foreign:courses.id', order: 'bigInteger unsigned', indexes: [[course_id, order]] }
+    Subject: { id: id, name: 'string unique', description: longText, year: 'smallInteger index', semester: 'smallInteger index', university_id: 'bigInteger unique foreign:universities.id' }
+    Quiz: { id: id, subject_id: 'bigInteger index foreign:subjects.id', name: string, duration: time }
+    Question: { id: id, name: string, quiz_id: 'bigInteger index foreign:quizzes.id', type: 'enum:"one","multi" default:"one"', order: 'smallInteger default:1', indexes: [[quiz_id, order]] }
+    Answer: { id: id, content: string, question_id: 'bigInteger index foreign:questions.id', correct: boolean }
+    StudentQuiz: { id: false, student_id: 'bigInteger foreign:students.id', quiz_id: 'bigInteger foreign:quizzes.id', indexes: [[student_id, quiz_id]] }
+    StudentQuizAnswer: { id: id, student_quiz_id: 'bigInteger index foreign:student_quizzes.id', answer_id: 'bigInteger index foreign:answers.id', question_id: 'bigInteger index foreign:questions.id', indexes: [[student_quiz_id, question_id]] }
