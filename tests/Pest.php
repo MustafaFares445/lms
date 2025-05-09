@@ -11,9 +11,10 @@
 |
 */
 
-pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('Feature');
+use Tests\TestCase;
+
+uses(TestCase::class)->in('Feature', 'Unit');
+uses(\Tests\Traits\ApiTestTrait::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------

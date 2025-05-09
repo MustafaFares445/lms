@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('course_teachers', function (Blueprint $table) {
+        Schema::create('course_teacher', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('teacher_id')->constrained('teachers');
             $table->foreignId('course_id')->constrained('courses');
-            $table->index('teacher_id');
-            $table->index('course_id');
+            $table->unique(['teacher_id' , 'course_id']);
             $table->timestamps();
         });
 

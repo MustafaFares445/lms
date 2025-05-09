@@ -17,7 +17,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property-read CarbonInterface|null $updated_at
  * @property-read Collection<Subject> $subjects
  */
-class University extends Model implements HasMedia , Sluggable
+class University extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\UniversityFactory> */
     use HasFactory, InteractsWithMedia , Sluggable;

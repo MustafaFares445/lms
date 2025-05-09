@@ -2,6 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Teacher;
+use App\Models\University;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,9 +20,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+      $this->call(RoleSeeder::class);
+      $this->call(UniversitySeeder::class);
+      $this->call(SubjectSeeder::class);
+      $this->call(CourseSeeder::class);
+      $this->call(UserSeeder::class);
+      $this->call(StudentSeeder::class);
+      $this->call(TeacherSeeder::class);
     }
 }

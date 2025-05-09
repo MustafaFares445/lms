@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int $dislikes
  * @property-read CarbonInterface|null $end_date
  * @property-read int $year
+ * @property-read string $type
  * @property-read int $section
  * @property-read int $subject_id
  * @property-read CarbonInterface $created_at
@@ -36,7 +37,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read Collection<Student> $students
  * @property-read Collection<Teacher> $teachers
  */
-class Course extends Model implements HasMedia , Sluggable
+class Course extends Model implements HasMedia
 {
     use HasFactory , InteractsWithMedia , Sluggable;
 
@@ -57,6 +58,7 @@ class Course extends Model implements HasMedia , Sluggable
         'year',
         'section',
         'subject_id',
+        'type'
     ];
 
     /**
@@ -120,7 +122,7 @@ class Course extends Model implements HasMedia , Sluggable
      */
     public function students(): BelongsToMany
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class)->withPivot(['lectures_percent' , 'quizez_percent']);
     }
 
     /**

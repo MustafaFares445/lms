@@ -15,10 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property-read int $id
  * @property-read int $user_id
- * @property-read string $first_name
- * @property-read string $last_name
- * @property-read string $phone
- * @property-read string $email
+ * @property-read string $name
+ * @property-read string $gender
+ * @property-read string $birth
  * @property-read string $student_number
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface|null $updated_at
@@ -37,12 +36,12 @@ class Student extends Model implements HasMedia
      * @var array
      */
     protected $fillable = [
+        'name',
         'user_id',
-        'first_name',
-        'last_name',
-        'phone',
         'student_number',
-        'university_id'
+        'university_id',
+        'gender',
+        'birth',
     ];
 
     /**

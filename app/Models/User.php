@@ -6,12 +6,14 @@ namespace App\Models;
 use App\Models\Student;
 use App\Models\Teacher;
 use Carbon\CarbonInterface;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property-read string $name
@@ -26,7 +28,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class User extends Authenticatable implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable , InteractsWithMedia;
+    use HasFactory, Notifiable , InteractsWithMedia , HasRoles , HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -35,9 +37,11 @@ class User extends Authenticatable implements HasMedia
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'phone',
         'password',
+        'is_banned',
     ];
 
     /**
@@ -61,6 +65,7 @@ class User extends Authenticatable implements HasMedia
             'email_verified_at' => 'datetime',
             'phone_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_banned' => 'boolean'
         ];
     }
 

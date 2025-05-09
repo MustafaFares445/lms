@@ -19,7 +19,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property-read CarbonInterface|null $updated_at
  * @property-read Subject $subject
  */
-class Quiz extends Model implements HasMedia , Sluggable
+class Quiz extends Model implements HasMedia
 {
     use HasFactory , InteractsWithMedia , Sluggable;
 

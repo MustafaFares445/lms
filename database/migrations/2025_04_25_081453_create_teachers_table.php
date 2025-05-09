@@ -15,12 +15,13 @@ return new class extends Migration
 
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('phone');
+            $table->string('whatsapp_phone');
             $table->foreignId('user_id')->constrained('users');
+            $table->float('rate')->default(0);
             $table->string('slug')->unique();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('phone')->unique();
-            $table->longText('description');
+            $table->longText('summary')->nullable();
             $table->timestamps();
         });
 

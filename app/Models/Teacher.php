@@ -14,17 +14,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 /**
  * @property-read int $id
  * @property-read int $user_id
- * @property-read string $first_name
- * @property-read string $last_name
+ * @property-read string $name
  * @property-read string $phone
- * @property-read string $description
+ * @property-read string $whatsapp_phone
+ * @property-read string $summary
+ * @property-read float $rate
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface|null $updated_at
  */
-class Teacher extends Model implements HasMedia , Sluggable
+class Teacher extends Model implements HasMedia
 {
     use HasFactory , InteractsWithMedia , Sluggable;
 
@@ -35,10 +38,11 @@ class Teacher extends Model implements HasMedia , Sluggable
      */
     protected $fillable = [
         'user_id',
-        'first_name',
-        'last_name',
+        'name',
+        'summary',
         'phone',
-        'description',
+        'whatsapp_phone',
+        'rate'
     ];
 
     /**
@@ -63,7 +67,7 @@ class Teacher extends Model implements HasMedia , Sluggable
     {
         return [
             'slug' => [
-                'source' => 'first_name' . ' ' . 'last_name'
+                'source' => 'user.name'
             ]
         ];
     }
@@ -82,11 +86,11 @@ class Teacher extends Model implements HasMedia , Sluggable
     /**
      * Get the courses associated with the teacher.
      *
-     * @return HasMany<Course , self>
+     * @return BelongsToMany<Course , self>
      */
-    public function courses(): HasMany
+    public function courses(): BelongsToMany
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsToMany(Course::class);
     }
 
     /**

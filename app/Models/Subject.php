@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read University $university
  * @property-read Collection<Quiz> $quizes
  */
-class Subject extends Model implements HasMedia , Sluggable
+class Subject extends Model implements HasMedia
 {
     use HasFactory , InteractsWithMedia , Sluggable;
 

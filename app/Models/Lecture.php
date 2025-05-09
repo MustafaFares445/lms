@@ -27,7 +27,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property-read Collection<Review> $reviews
  * @property-read Quiz $quiz
  */
-class Lecture extends Model implements HasMedia , Sluggable
+class Lecture extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia , Sluggable;
 

@@ -1,0 +1,639 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "LMS Software Api ",
+        "description": "API Description",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "description": "Allows a new user to register by providing necessary details such as name, email, password, and role. Upon successful registration, an access token is returned for authentication.",
+                "operationId": "d764dd091cc4494ae0baf360b03319f3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful registration",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "accessToken": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        },
+                                        "tokenType": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "expiresAt": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-12-31T23:59:59Z"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Invalid input data"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login a user",
+                "description": "Authenticates a user by validating their credentials (email/phone/username and password). If successful, an access token is returned for subsequent authenticated requests.",
+                "operationId": "8dcb70df1020986038d098cc08d05dae",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "accessToken": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        },
+                                        "tokenType": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout a user",
+                "description": "Logs out the currently authenticated user by invalidating their access token. This ensures that the token can no longer be used for authenticated requests.",
+                "operationId": "69281b12abb272c76871f19cb17ca563",
+                "responses": {
+                    "204": {
+                        "description": "Successful logout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - User not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/home/recently-added": {
+            "get": {
+                "tags": [
+                    "Home Page"
+                ],
+                "summary": "Get recently added courses",
+                "description": "Returns a list of the 5 most recently added courses",
+                "operationId": "b413ce1a83607c923abbabd21e58f2f4",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourseResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/home/my-courses": {
+            "get": {
+                "tags": [
+                    "Home Page"
+                ],
+                "summary": "Get user's enrolled courses",
+                "description": "Returns a list of the 5 most recently enrolled courses for the authenticated user",
+                "operationId": "7a8268437e45f5ef3ab4fb577a1fcb3f",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourseResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ValidationErrorResponse": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The given data was invalid."
+                    },
+                    "errors": {
+                        "type": "object",
+                        "example": {
+                            "email": [
+                                "The email field is required."
+                            ],
+                            "password": [
+                                "The password field is required."
+                            ]
+                        },
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "LoginRequest": {
+                "required": [
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Required when phone is not provided. Must be a valid email address.",
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255,
+                        "example": "user@example.com"
+                    },
+                    "phone": {
+                        "description": "Required when email is not provided. Must be a valid phone number.",
+                        "type": "string",
+                        "maxLength": 20,
+                        "example": "+1234567890"
+                    },
+                    "password": {
+                        "description": "Must be at least 4 characters long.",
+                        "type": "string",
+                        "minLength": 4,
+                        "example": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterRequest": {
+                "required": [
+                    "role",
+                    "password",
+                    "passwordConfirmation"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "User name",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "description": "User email (required if phone is not provided)",
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "phone": {
+                        "description": "User phone number (required if email is not provided). Must be a valid phone number starting with '09' and followed by 8 digits.",
+                        "type": "string",
+                        "maxLength": 20,
+                        "pattern": "/^09\\d{8}$/",
+                        "example": "0912345678"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string",
+                        "minLength": 4
+                    },
+                    "role": {
+                        "description": "User role (student or teacher)",
+                        "type": "string",
+                        "enum": [
+                            "student",
+                            "teacher"
+                        ]
+                    },
+                    "student": {
+                        "description": "Student details (required if role is student)",
+                        "properties": {
+                            "studentNumber": {
+                                "description": "Student number",
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "universityId": {
+                                "description": "University ID (must exist in universities table)",
+                                "type": "integer"
+                            },
+                            "gender": {
+                                "description": "Student gender",
+                                "type": "string",
+                                "enum": [
+                                    "male",
+                                    "female"
+                                ]
+                            },
+                            "birth": {
+                                "description": "Student birth date",
+                                "type": "string",
+                                "format": "date"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "teacher": {
+                        "description": "Teacher details (required if role is teacher)",
+                        "properties": {
+                            "summary": {
+                                "description": "Teacher summary",
+                                "type": "string",
+                                "maxLength": 1000
+                            },
+                            "phone": {
+                                "description": "Teacher phone number (must be a valid phone number starting with '09' and followed by 8 digits).",
+                                "type": "string",
+                                "maxLength": 20,
+                                "pattern": "/^09\\d{8}$/",
+                                "example": "0912345678"
+                            },
+                            "whatsappPhone": {
+                                "description": "Teacher WhatsApp phone number",
+                                "type": "string",
+                                "maxLength": 20
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "image": {
+                        "description": "User image (optional)",
+                        "type": "string",
+                        "format": "binary",
+                        "maxLength": 2048
+                    }
+                },
+                "type": "object"
+            },
+            "CourseResource": {
+                "title": "Course Resource",
+                "description": "Course resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier for the course",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "The name of the course",
+                        "type": "string",
+                        "example": "Introduction to Laravel"
+                    },
+                    "summary": {
+                        "description": "A brief summary of the course",
+                        "type": "string",
+                        "example": "Learn the basics of Laravel framework"
+                    },
+                    "studentsCount": {
+                        "description": "The number of students enrolled in the course",
+                        "type": "integer",
+                        "example": 25
+                    },
+                    "createdAt": {
+                        "description": "The date and time when the course was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-10-01T12:00:00Z"
+                    },
+                    "teachers": {
+                        "description": "List of teachers associated with the course",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TeacherResource"
+                        }
+                    },
+                    "primaryImage": {
+                        "$ref": "#/components/schemas/MediaResource"
+                    },
+                    "images": {
+                        "description": "List of images associated with the course",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "MediaResource": {
+                "title": "MediaResource",
+                "description": "Media resource representation for files and images",
+                "required": [
+                    "id",
+                    "name",
+                    "fileName",
+                    "collection",
+                    "url",
+                    "size",
+                    "type",
+                    "extension",
+                    "caption"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the media",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Name of the media file without extension",
+                        "type": "string",
+                        "example": "nature_photo"
+                    },
+                    "fileName": {
+                        "description": "Complete file name with extension",
+                        "type": "string",
+                        "example": "nature_photo.jpg"
+                    },
+                    "collection": {
+                        "description": "Collection name where the media is stored",
+                        "type": "string",
+                        "example": "photos"
+                    },
+                    "url": {
+                        "description": "Full URL to access the media file",
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://example.com/storage/media/nature_photo.jpg"
+                    },
+                    "size": {
+                        "description": "Human-readable file size",
+                        "type": "string",
+                        "example": "2.5 MB"
+                    },
+                    "type": {
+                        "description": "Type of media",
+                        "type": "string",
+                        "enum": [
+                            "image",
+                            "video",
+                            "document",
+                            "audio",
+                            "other"
+                        ],
+                        "example": "image"
+                    },
+                    "extension": {
+                        "description": "File extension",
+                        "type": "string",
+                        "example": "jpg"
+                    },
+                    "caption": {
+                        "description": "Caption or description of the media. Falls back to name if not set",
+                        "type": "string",
+                        "example": "Beautiful nature photograph"
+                    },
+                    "width": {
+                        "description": "Width of the image in pixels (only for images)",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1920,
+                        "nullable": true
+                    },
+                    "height": {
+                        "description": "Height of the image in pixels (only for images)",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1080,
+                        "nullable": true
+                    },
+                    "thumbnailUrl": {
+                        "description": "URL of the thumbnail version. Only present if 'thumb' conversion exists",
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://example.com/storage/media/conversions/nature_photo-thumb.jpg",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "TeacherResource": {
+                "title": "Teacher Resource",
+                "description": "Teacher resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the teacher",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the teacher",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "The email of the teacher",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "The date and time the teacher was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "The date and time the teacher was last updated",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "title": "User Resource",
+                "description": "User resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The user's unique identifier",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "The user's name",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "description": "The user's email address",
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "phone": {
+                        "description": "The user's phone number",
+                        "type": "string",
+                        "example": "+1234567890"
+                    },
+                    "emailVerifiedAt": {
+                        "description": "The timestamp when the email was verified",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01"
+                    },
+                    "phoneVerifiedAt": {
+                        "description": "The timestamp when the phone was verified",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01"
+                    },
+                    "createdAt": {
+                        "description": "The timestamp when the user was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01"
+                    },
+                    "updatedAt": {
+                        "description": "The timestamp when the user was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01"
+                    },
+                    "student": {
+                        "description": "The student details if the user is a student",
+                        "type": "object"
+                    },
+                    "teacher": {
+                        "description": "The teacher details if the user is a teacher",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authentication endpoints"
+        },
+        {
+            "name": "Home Page",
+            "description": "Endpoints related to the home page"
+        }
+    ]
+}
