@@ -548,7 +548,12 @@
                     "401": {
                         "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -576,7 +581,12 @@
                     "422": {
                         "description": "Validation error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

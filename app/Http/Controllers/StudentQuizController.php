@@ -17,6 +17,7 @@ class StudentQuizController extends Controller
      *     path="/api/students/quizzes",
      *     summary="Get a list of student quizzes",
      *     tags={"Student Quizzes"},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
@@ -48,6 +49,7 @@ class StudentQuizController extends Controller
      *     path="/api/students/quizzes",
      *     summary="Store a new student quiz",
      *     tags={"Student Quizzes"},
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/StoreStudentQuizRequest")
