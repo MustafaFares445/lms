@@ -65,14 +65,43 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     ),
  *     @OA\Property(
  *         property="isBanned",
- *                 property="student",
+ *         type="boolean",
+ *         description="Indicates if the user is banned",
+ *         example=false
+ *     ),
+ *     @OA\Property(
+ *         property="student",
  *         type="object",
- *         description="The student details if the user is a student"
+ *         description="The student details if the user is a student",
+ *         @OA\Property(
+ *             property="id",
+ *             type="integer",
+ *             description="The student's unique identifier",
+ *             example=1
+ *         ),
+ *         @OA\Property(
+ *             property="name",
+ *             type="string",
+ *             description="The student's name",
+ *             example="Jane Doe"
+ *         )
  *     ),
  *     @OA\Property(
  *         property="teacher",
  *         type="object",
- *         description="The teacher details if the user is a teacher"
+ *         description="The teacher details if the user is a teacher",
+ *         @OA\Property(
+ *             property="id",
+ *             type="integer",
+ *             description="The teacher's unique identifier",
+ *             example=1
+ *         ),
+ *         @OA\Property(
+ *             property="name",
+ *             type="string",
+ *             description="The teacher's name",
+ *             example="John Smith"
+ *         )
  *     )
  * )
  */
@@ -95,9 +124,10 @@ class UserResource extends JsonResource
             'createdAt' => $this->when($this->created_at , $this->created_at->toDateTimeString()),
             'updatedAt' => $this->when($this->updated_at , $this->updated_at->toDateTimeString()),
             'isBanned' => $this->when($this->is_banned , $this->is_banned),
-            'roles' => $this->whenLoaded('roles' , $this->getRoleNames()),
+            'roles' => $this->RelationLoaded('roles') ? $this->getRolesNames() : [],
             'student' => $this->whenLoaded('student'),
-            'teacher' => $this->whenLoaded('teacher'),
+            'teacher' => TeacherResource::make($this->whenLoaded('teacher')),
+            'image' => MediaResource::make($this->RelationLoaded('media') ? $this->getFirstMedia('images') : null),
         ];
     }
 }

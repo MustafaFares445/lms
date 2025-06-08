@@ -37,7 +37,7 @@ class HomePageController extends Controller
     {
         return CourseResource::collection(
             Course::with('media')
-            ->select(['id', 'name', 'summary', 'type' , 'created_at'])
+            ->select(['id', 'name', 'summary', 'type' , 'slug' ,'created_at'])
             ->withCount(['students'])
             ->latest()
             ->take(5)
@@ -69,7 +69,7 @@ class HomePageController extends Controller
         return CourseResource::collection(
            Course::with('media', 'teachers.media' , 'students')
             ->whereHas('students' , fn($q) => $q->where('student_id' , $user->student->id))
-            ->select(['id', 'name', 'summary', 'created_at'])
+            ->select(['id', 'name', 'summary', 'slug' , 'created_at'])
             ->latest()
             ->take(5)
             ->get()

@@ -27,6 +27,10 @@ return new class extends Migration
             $table->smallInteger('section')->index();
             $table->enum('type', ['full' , 'partial']);
             $table->foreignId('subject_id')->constrained('subjects');
+            $table->integer('discount')->nullable();
+            $table->integer('price');
+            $table->double('rating')->default(0);
+            $table->time('time')->default(0);
             $table->timestamps();
         });
 

@@ -6,6 +6,33 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/ads": {
+            "get": {
+                "tags": [
+                    "Ads"
+                ],
+                "summary": "Get all active ads",
+                "operationId": "239783e848a702c6aaba9101973ea9fc",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AdResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/api/auth/register": {
             "post": {
                 "tags": [
@@ -178,6 +205,161 @@
                 ]
             }
         },
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get a list of courses",
+                "description": "Display a listing of the resource.",
+                "operationId": "02eeda67042dba2d22a517f26fb8eaf1",
+                "parameters": [
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "Filter courses by year",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of courses per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 5
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourseResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course}": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get a specific course by ID",
+                "description": "Display the specified resource.",
+                "operationId": "c296c0c8738577d66bdd1332e8684906",
+                "parameters": [
+                    {
+                        "name": "course",
+                        "in": "path",
+                        "description": "slug of the course to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course}/teachers": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get teachers for a specific course",
+                "description": "Get the teachers associated with a specific course.",
+                "operationId": "b19e8a6983d2e47dda47c4f32180065e",
+                "parameters": [
+                    {
+                        "name": "course",
+                        "in": "path",
+                        "description": "slug of the course to retrieve teachers for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TeacherResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    }
+                }
+            }
+        },
+        "/api/courses/grouped-by-year": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get courses grouped by year",
+                "description": "Get courses grouped by year.",
+                "operationId": "49f948f69225650ae0ca3d6d00693dc4",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/CourseResource"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
         "/api/home/recently-added": {
             "get": {
                 "tags": [
@@ -256,6 +438,51 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/courses/my-courses": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get user courses",
+                "description": "Returns a list of courses for the authenticated user",
+                "operationId": "getUserCourses",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourseResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -412,6 +639,24 @@
                 },
                 "type": "object"
             },
+            "AdResource": {
+                "title": "Ad Resource",
+                "description": "Ad resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the ad",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "The title of the ad",
+                        "type": "string"
+                    },
+                    "image": {
+                        "$ref": "#/components/schemas/MediaResource"
+                    }
+                },
+                "type": "object"
+            },
             "CourseResource": {
                 "title": "Course Resource",
                 "description": "Course resource representation",
@@ -470,6 +715,101 @@
                         "type": "number",
                         "format": "float",
                         "example": 60
+                    },
+                    "type": {
+                        "description": "The type of the course",
+                        "type": "string",
+                        "example": "online"
+                    },
+                    "discount": {
+                        "description": "The discount applied to the course",
+                        "type": "number",
+                        "format": "float",
+                        "example": 10
+                    },
+                    "price": {
+                        "description": "The price of the course",
+                        "type": "number",
+                        "format": "float",
+                        "example": 99.99
+                    },
+                    "rating": {
+                        "description": "The rating of the course",
+                        "type": "number",
+                        "format": "float",
+                        "example": 4.5
+                    },
+                    "teachersCount": {
+                        "description": "The number of teachers associated with the course",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "year": {
+                        "description": "The year the course was created",
+                        "type": "integer",
+                        "example": 2023
+                    },
+                    "time": {
+                        "description": "The duration of the course in hours",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "quizezCount": {
+                        "description": "The number of quizzes in the course",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "filesCount": {
+                        "description": "The number of files associated with the course",
+                        "type": "integer",
+                        "example": 10
+                    }
+                },
+                "type": "object"
+            },
+            "CourseSessionResource": {
+                "title": "Course Session Resource",
+                "description": "Course Session resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the course session",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "The title of the course session",
+                        "type": "string"
+                    },
+                    "note": {
+                        "description": "Additional notes for the course session",
+                        "type": "string"
+                    },
+                    "time": {
+                        "description": "The time of the course session",
+                        "type": "string"
+                    },
+                    "like": {
+                        "description": "The number of likes for the course session",
+                        "type": "integer"
+                    },
+                    "dislike": {
+                        "description": "The number of dislikes for the course session",
+                        "type": "integer"
+                    },
+                    "teacher": {
+                        "$ref": "#/components/schemas/TeacherResource"
+                    },
+                    "course": {
+                        "$ref": "#/components/schemas/CourseResource"
+                    },
+                    "video": {
+                        "description": "The video media associated with the course session",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaResource"
+                        }
+                    },
+                    "image": {
+                        "$ref": "#/components/schemas/MediaResource"
                     }
                 },
                 "type": "object"
@@ -567,51 +907,69 @@
                 },
                 "type": "object"
             },
+            "ReviewResource": {
+                "title": "Review Resource",
+                "description": "Review resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier of the review",
+                        "type": "integer"
+                    },
+                    "content": {
+                        "description": "The content of the review",
+                        "type": "string"
+                    },
+                    "rating": {
+                        "description": "The rating given in the review",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "The date when the review was created",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserResource"
+                    }
+                },
+                "type": "object"
+            },
             "TeacherResource": {
                 "title": "Teacher Resource",
                 "description": "Teacher resource representation",
                 "properties": {
                     "id": {
                         "description": "The ID of the teacher",
-                        "type": "integer",
-                        "example": 1
+                        "type": "integer"
                     },
                     "name": {
                         "description": "The name of the teacher",
-                        "type": "string",
-                        "example": "John Doe"
+                        "type": "string"
                     },
                     "rate": {
-                        "description": "The rate of the teacher",
+                        "description": "The rating of the teacher",
                         "type": "number",
-                        "example": 4.5
+                        "format": "float"
                     },
                     "image": {
-                        "description": "The image of the teacher",
-                        "properties": {
-                            "url": {
-                                "description": "The URL of the image",
-                                "type": "string",
-                                "example": "https://example.com/images/john-doe.jpg"
-                            }
-                        },
-                        "type": "object"
+                        "$ref": "#/components/schemas/MediaResource"
                     },
                     "createdAt": {
-                        "description": "The date and time the teacher was created",
+                        "description": "The date when the teacher was created",
                         "type": "string",
-                        "format": "date-time",
-                        "example": "2023-01-01T12:00:00Z"
+                        "format": "date"
                     },
                     "reviewsCount": {
-                        "description": "The number of reviews the teacher has received",
-                        "type": "integer",
-                        "example": 10
+                        "description": "The number of reviews for the teacher",
+                        "type": "integer"
+                    },
+                    "studentsCount": {
+                        "description": "The number of students for the teacher",
+                        "type": "integer"
                     },
                     "coursesCount": {
-                        "description": "The number of courses the teacher has created",
-                        "type": "integer",
-                        "example": 5
+                        "description": "The number of courses for the teacher",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -664,12 +1022,41 @@
                         "format": "date-time",
                         "example": "2023-01-01"
                     },
+                    "isBanned": {
+                        "description": "Indicates if the user is banned",
+                        "type": "boolean",
+                        "example": false
+                    },
                     "student": {
                         "description": "The student details if the user is a student",
+                        "properties": {
+                            "id": {
+                                "description": "The student's unique identifier",
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "description": "The student's name",
+                                "type": "string",
+                                "example": "Jane Doe"
+                            }
+                        },
                         "type": "object"
                     },
                     "teacher": {
                         "description": "The teacher details if the user is a teacher",
+                        "properties": {
+                            "id": {
+                                "description": "The teacher's unique identifier",
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "description": "The teacher's name",
+                                "type": "string",
+                                "example": "John Smith"
+                            }
+                        },
                         "type": "object"
                     }
                 },
@@ -691,6 +1078,14 @@
         {
             "name": "Home Page",
             "description": "Endpoints related to the home page"
+        },
+        {
+            "name": "Ads",
+            "description": "Ads"
+        },
+        {
+            "name": "Courses",
+            "description": "Courses"
         }
     ]
 }

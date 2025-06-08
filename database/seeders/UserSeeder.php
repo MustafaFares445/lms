@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
 
         // Add a fake image to the student user
         $student->addMediaFromUrl('https://picsum.photos/200/300')
-                ->toMediaCollection('avatar');
+                ->toMediaCollection('images');
 
         // Create a teacher user
         $teacher =  User::create([
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
 
         // Add a fake image to the teacher user
         $teacher->addMediaFromUrl('https://picsum.photos/200/300')
-                ->toMediaCollection('avatar');
+                ->toMediaCollection('images');
 
                   // Create a teacher user
         $teacher2 =  User::create([
@@ -59,6 +59,6 @@ class UserSeeder extends Seeder
 
         // Add a fake image to the teacher user
         $teacher2->addMediaFromUrl('https://picsum.photos/200/300')
-                ->toMediaCollection('avatar');
+                ->toMediaCollection('images');
     }
 }

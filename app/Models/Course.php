@@ -11,6 +11,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -58,7 +59,11 @@ class Course extends Model implements HasMedia
         'year',
         'section',
         'subject_id',
-        'type'
+        'type',
+        'discount',
+        'price',
+        'rating',
+        'time'
     ];
 
     /**
@@ -106,6 +111,26 @@ class Course extends Model implements HasMedia
     }
 
     /**
+     * Get the course sessions associated with the course.
+     *
+     * @return HasMany<CourseSession>
+     */
+    public function courseSessions()
+    {
+        return $this->hasMany(CourseSession::class);
+    }
+
+    /**
+     * Get the course sessions associated with the course.
+     *
+     * @return HasMany<CourseSession>
+     */
+    public function quizez()
+    {
+        return $this->hasMany(CourseSession::class)->where('type' , 'quiz');
+    }
+
+    /**
      * Get the reviews associated with the course.
      *
      * @return MorphMany<Review , self>
@@ -114,6 +139,7 @@ class Course extends Model implements HasMedia
     {
         return $this->morphMany(Review::class , 'model');
     }
+
 
     /**
      * Get the students associated with the course.
