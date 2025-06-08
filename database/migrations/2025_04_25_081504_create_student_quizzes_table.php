@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('student_quizzes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('students');
-            $table->foreignId('quiz_id')->constrained('quizzes');
+            $table->morphs('quizable');
             $table->index('student_id');
 
             $table->smallInteger('solved_questions');

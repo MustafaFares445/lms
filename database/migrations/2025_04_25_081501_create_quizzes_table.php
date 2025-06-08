@@ -17,9 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique();
             $table->foreignId('subject_id')->constrained('subjects');
-            $table->morphs('model');
-            $table->string('name');
-            $table->time('duration');
+            $table->string('title');
+            $table->time('time');
             $table->timestamps();
         });
 

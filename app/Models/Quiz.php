@@ -33,8 +33,8 @@ class Quiz extends Model implements HasMedia
      */
     protected $fillable = [
         'subject_id',
-        'name',
-        'duration',
+        'title',
+        'time',
     ];
 
     /**

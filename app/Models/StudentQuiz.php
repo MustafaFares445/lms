@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property-read int $id
@@ -28,7 +29,8 @@ class StudentQuiz extends Model
      */
     protected $fillable = [
         'student_id',
-        'quiz_id',
+        'quizable_id',
+        'quizable_type',
         'solved_questions',
         'total_questions',
         'time_taked'
@@ -42,11 +44,8 @@ class StudentQuiz extends Model
     protected function casts(): array
     {
         return [
-            'student_id' => 'integer',
-            'quiz_id' => 'integer',
             'solved_questions' => 'integer',
             'total_questions' => 'integer',
-            'time_taked' => 'datetime'
         ];
     }
 
@@ -63,10 +62,10 @@ class StudentQuiz extends Model
     /**
      * Get the quiz that owns the StudentQuiz.
      *
-     * @return BelongsTo<Quiz, StudentQuiz>
+     * @return MorphTo<Quiz, StudentQuiz>
      */
-    public function quiz(): BelongsTo
+    public function quiz(): MorphTo
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->morphTo('quizable');
     }
 }

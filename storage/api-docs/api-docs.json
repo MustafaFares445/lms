@@ -523,6 +523,61 @@
                     }
                 ]
             }
+        },
+        "/api/students/quizzes": {
+            "get": {
+                "tags": [
+                    "Student Quizzes"
+                ],
+                "summary": "Get a list of student quizzes",
+                "operationId": "7228b2729a0df30c7d0ce141e27ce91e",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/StudentQuizResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Student Quizzes"
+                ],
+                "summary": "Store a new student quiz",
+                "operationId": "765f9e4a6874c3a7b45e3cfda18b9b4a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreStudentQuizRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Quiz stored successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -674,6 +729,38 @@
                         "type": "string",
                         "format": "binary",
                         "maxLength": 2048
+                    }
+                },
+                "type": "object"
+            },
+            "StoreStudentQuizRequest": {
+                "required": [
+                    "quizId",
+                    "quizType",
+                    "solvedQuestions",
+                    "timeTaked"
+                ],
+                "properties": {
+                    "quizId": {
+                        "description": "The ID of the quiz",
+                        "type": "integer"
+                    },
+                    "quizType": {
+                        "description": "The type of the quiz",
+                        "type": "string",
+                        "enum": [
+                            "quiz",
+                            "courseSession"
+                        ]
+                    },
+                    "solvedQuestions": {
+                        "description": "The number of questions solved",
+                        "type": "integer"
+                    },
+                    "timeTaked": {
+                        "description": "The time taken to complete the quiz",
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -994,6 +1081,28 @@
                 },
                 "type": "object"
             },
+            "QuizResource": {
+                "title": "Quiz Resource",
+                "description": "Quiz resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the quiz",
+                        "type": "integer"
+                    },
+                    "subject": {
+                        "$ref": "#/components/schemas/SubjectResource"
+                    },
+                    "title": {
+                        "description": "The title of the quiz",
+                        "type": "string"
+                    },
+                    "time": {
+                        "description": "The time allocated for the quiz in minutes",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
             "ReviewResource": {
                 "title": "Review Resource",
                 "description": "Review resource representation",
@@ -1017,6 +1126,66 @@
                     },
                     "user": {
                         "$ref": "#/components/schemas/UserResource"
+                    }
+                },
+                "type": "object"
+            },
+            "StudentQuizResource": {
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier of the student quiz",
+                        "type": "integer"
+                    },
+                    "quiz": {
+                        "$ref": "#/components/schemas/QuizResource"
+                    },
+                    "courseQuiz": {
+                        "$ref": "#/components/schemas/CourseSessionResource"
+                    },
+                    "solvedQuestions": {
+                        "description": "The number of questions solved by the student",
+                        "type": "integer"
+                    },
+                    "totalQuestions": {
+                        "description": "The total number of questions in the quiz",
+                        "type": "integer"
+                    },
+                    "timeTaked": {
+                        "description": "The time taken by the student to complete the quiz",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "SubjectResource": {
+                "title": "Subject Resource",
+                "description": "Subject resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier of the subject",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the subject",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "The description of the subject",
+                        "type": "string"
+                    },
+                    "year": {
+                        "description": "The academic year of the subject",
+                        "type": "integer"
+                    },
+                    "semester": {
+                        "description": "The semester in which the subject is taught",
+                        "type": "integer"
+                    },
+                    "university": {
+                        "description": "The university associated with the subject",
+                        "type": "object",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -1177,6 +1346,10 @@
         {
             "name": "Course Sessions",
             "description": "Course Sessions"
+        },
+        {
+            "name": "Student Quizzes",
+            "description": "Student Quizzes"
         }
     ]
 }

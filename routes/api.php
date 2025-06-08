@@ -8,6 +8,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseSessionController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\MyCourseController;
+use App\Http\Controllers\StudentQuizController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -38,4 +39,9 @@ Route::prefix('/courses')->group(function(){
     Route::get('/{course:slug}' , [CourseController::class , 'show']);
     Route::get('/{course:slug}/teachers' , [CourseController::class , 'getCourseTeachers']);
     Route::get('/sessions/{courseSession}/quiz-questions' , [CourseSessionController::class , 'getQuizQuestions']);
+});
+
+Route::prefix('/students/quizzes')->group(function(){
+    Route::get('' , [StudentQuizController::class , 'index']);
+    Route::post('' , [StudentQuizController::class , 'store']);
 });
