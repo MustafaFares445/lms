@@ -360,6 +360,45 @@
                 }
             }
         },
+        "/api/courses/sessions/{courseSession}/quiz-questions": {
+            "get": {
+                "tags": [
+                    "Course Sessions"
+                ],
+                "summary": "Get quiz questions for a specific course session",
+                "description": "Retrieve all quiz questions associated with a specific course session, including media and answers.",
+                "operationId": "getQuizQuestions",
+                "parameters": [
+                    {
+                        "name": "courseSession",
+                        "in": "path",
+                        "description": "ID of the course session",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/QuestionResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course session not found"
+                    }
+                }
+            }
+        },
         "/api/home/recently-added": {
             "get": {
                 "tags": [
@@ -657,6 +696,25 @@
                 },
                 "type": "object"
             },
+            "AnswerResource": {
+                "title": "Answer Resource",
+                "description": "Answer resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier of the answer",
+                        "type": "integer"
+                    },
+                    "content": {
+                        "description": "The content of the answer",
+                        "type": "string"
+                    },
+                    "correct": {
+                        "description": "Indicates if the answer is correct",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
             "CourseResource": {
                 "title": "Course Resource",
                 "description": "Course resource representation",
@@ -907,6 +965,35 @@
                 },
                 "type": "object"
             },
+            "QuestionResource": {
+                "title": "Question Resource",
+                "description": "Question resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the question",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "The title of the question",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "The type of the question",
+                        "type": "string"
+                    },
+                    "media": {
+                        "$ref": "#/components/schemas/MediaResource"
+                    },
+                    "answers": {
+                        "description": "The answers associated with the question",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AnswerResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "ReviewResource": {
                 "title": "Review Resource",
                 "description": "Review resource representation",
@@ -1086,6 +1173,10 @@
         {
             "name": "Courses",
             "description": "Courses"
+        },
+        {
+            "name": "Course Sessions",
+            "description": "Course Sessions"
         }
     ]
 }

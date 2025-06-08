@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseSessionController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\MyCourseController;
 
@@ -36,4 +37,5 @@ Route::prefix('/courses')->group(function(){
     Route::get('/grouped-by-year' , [CourseController::class , 'groupedByYear']);
     Route::get('/{course:slug}' , [CourseController::class , 'show']);
     Route::get('/{course:slug}/teachers' , [CourseController::class , 'getCourseTeachers']);
+    Route::get('/sessions/{courseSession}/quiz-questions' , [CourseSessionController::class , 'getQuizQuestions']);
 });

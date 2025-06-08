@@ -15,11 +15,10 @@ return new class extends Migration
 
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('quiz_id')->constrained('quizzes');
+            $table->string('title');
+            $table->morphs('quizable');
             $table->enum('type', ["one","multi"])->default('one');
             $table->smallInteger('order')->default(1);
-            $table->index('quiz_id');
             $table->timestamps();
         });
 

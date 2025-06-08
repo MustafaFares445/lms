@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * Class CourseSession
@@ -59,5 +60,18 @@ class CourseSession extends Model implements HasMedia
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    /**
+     * Get the questions associated with the session.
+     *
+     * This method defines a polymorphic one-to-many relationship between the CourseSession
+     * and the Question model, allowing a session to have multiple questions.
+     *
+     * @return MorphMany
+     */
+    public function questions() : MorphMany
+    {
+        return $this->morphMany(Question::class , 'quizable');
     }
 }

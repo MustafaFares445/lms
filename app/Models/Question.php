@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -29,8 +30,9 @@ class Question extends Model implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'name',
-        'quiz_id',
+        'title',
+        'quizable_id',
+        'quizable_type',
         'type',
         'order',
     ];
@@ -54,8 +56,13 @@ class Question extends Model implements HasMedia
      *
      * @return BelongsTo<Quiz, Question>
      */
-    public function quiz(): BelongsTo
+    public function quizable(): BelongsTo
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->morphTo();
+    }
+
+    public function answers() : HasMany
+    {
+        return $this->hasMany(Answer::class);
     }
 }

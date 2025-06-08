@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Subject;
+use App\Models\Question;
 use Carbon\CarbonInterface;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @property-read int $id
  * @property-read int $subject_id
@@ -72,13 +75,16 @@ class Quiz extends Model implements HasMedia
         return $this->belongsTo(Subject::class);
     }
 
-    /**
-     * Get the related model.
+   /**
+     * Get the questions associated with the session.
      *
-     * @return MorphTo<Model>
+     * This method defines a polymorphic one-to-many relationship between the CourseSession
+     * and the Question model, allowing a session to have multiple questions.
+     *
+     * @return MorphMany
      */
-    public function model(): MorphTo
+    public function questions() : MorphMany
     {
-        return $this->morphTo();
+        return $this->morphMany(Question::class , 'quizable');
     }
 }
