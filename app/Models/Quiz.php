@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Quiz extends Model implements HasMedia
 {
-    use HasFactory , InteractsWithMedia , Sluggable;
+    use HasFactory , InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -52,19 +52,6 @@ class Quiz extends Model implements HasMedia
         ];
     }
 
-     /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'name'
-            ]
-        ];
-    }
 
     /**
      * Get the subject that owns the Quiz.

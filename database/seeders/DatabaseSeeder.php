@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-
+use App\Models\Quiz;
+use App\Models\UserProgress;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,9 +20,13 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(StudentSeeder::class);
         $this->call(TeacherSeeder::class);
+        $this->call(QuizSeeder::class);
         $this->call(CourseSessionSeeder::class);
         $this->call(ReviewSeeder::class);
         $this->call(QuestionSeeder::class);
         $this->call(AnswerSeeder::class);
+        $this->call(OrderSeeder::class);
+        $this->call(SavedCourseSeeder::class);
+        $this->call(UserProgressSeeder::class);
     }
 }

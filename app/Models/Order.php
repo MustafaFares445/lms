@@ -9,11 +9,12 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Order extends Model implements HasMedia
 {
     use InteractsWithMedia;
-    
+
     protected $fillable = [
         'user_id',
         'course_id',
-        'status'
+        'status',
+        'note'
     ];
 
     public function user()
