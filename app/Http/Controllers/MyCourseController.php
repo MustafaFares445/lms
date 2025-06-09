@@ -18,7 +18,7 @@ class MyCourseController extends Controller
      *     description="Returns a list of courses for the authenticated user",
      *     operationId="getUserCourses",
      *     tags={"Courses"},
-     *     security={{"bearerAuth": {}}},
+ 
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",

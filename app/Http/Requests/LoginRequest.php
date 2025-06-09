@@ -15,7 +15,7 @@ use Illuminate\Validation\Rule;
  *         format="email",
  *         maxLength=255,
  *         description="Required when phone is not provided. Must be a valid email address.",
- *         example="user@example.com"
+ *         example="student@example.com"
  *     ),
  *     @OA\Property(
  *         property="phone",
@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required_without:phone', 'string', 'email', 'max:255', Rule::exists('users', 'email')],
-            'phone' => ['required_without:email', 'string', 'max:20', Rule::exists('users', 'phone')],
+            'phone' => ['required_without:email', 'nullable' , 'string', 'max:20', Rule::exists('users', 'phone')],
             'password' => ['required', 'string', 'min:4'],
         ];
     }

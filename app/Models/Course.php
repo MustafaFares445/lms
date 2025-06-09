@@ -6,6 +6,7 @@ use App\Models\Review;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
+use App\Models\UserSaved;
 use Carbon\CarbonInterface;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
@@ -79,7 +80,6 @@ class Course extends Model implements HasMedia
             'likes' => 'integer',
             'dislikes' => 'integer',
             'end_date' => 'datetime',
-            'year' => 'integer',
             'section' => 'integer',
             'subject_id' => 'integer',
         ];
@@ -140,7 +140,16 @@ class Course extends Model implements HasMedia
         return $this->morphMany(Review::class , 'model');
     }
 
-
+    /**
+     * Get the reviews associated with the course.
+     *
+     * @return MorphMany<UserSaved , self>
+     */
+    public function userSaved() : MorphMany
+    {
+        return $this->morphMany(UserSaved::class , 'saveable');
+    }
+    
     /**
      * Get the students associated with the course.
      *

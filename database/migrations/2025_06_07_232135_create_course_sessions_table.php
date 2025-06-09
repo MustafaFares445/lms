@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('disLike')->default(0);
             $table->enum('type' , ['session' , 'quiz']);
             $table->unsignedInteger('order')->default(1);
+            $table->boolean('isFree')->default(false);
             $table->timestamps();
         });
     }

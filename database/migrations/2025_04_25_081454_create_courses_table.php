@@ -23,7 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('likes')->default(0)->index();
             $table->unsignedBigInteger('dislikes')->default(0)->index();
             $table->dateTime('end_date')->nullable();
-            $table->smallInteger('year')->index();
             $table->smallInteger('section')->index();
             $table->enum('type', ['full' , 'partial']);
             $table->foreignId('subject_id')->constrained('subjects');

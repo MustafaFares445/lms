@@ -160,7 +160,7 @@ class CourseResource extends JsonResource
             'price' => $this->when($this->price , $this->price),
             'rating' => $this->rating,
             'year' => $this->when($this->year , $this->year),
-            'time' => $this->when($this->time || $this->time == 0 , $this->time),
+            'time' => $this->when($this->time, $this->time),
 
             'quizezPercent' => $studentCondition ? $this->whenLoaded('students', function () {
                 return $this->students->first()->pivot->quizez_percent;
@@ -184,7 +184,9 @@ class CourseResource extends JsonResource
             'teachersCount' => $this->whenCounted('teachers'),
             'studentsCount' => $this->whenCounted('students'),
             'quizezCount'   => $this->whenCounted('quizez'),
-            'filesCount'    => $this->when($this->filesCount || $this->filesCount == 0, $this->filesCount),
+            'filesCount'    => $this->when($this->filesCount || $this->filesCount == 0, $this->filesCount , null),
+            'userSavedExists'     => $this->when($this->userSavedExists || $this->userSavedExists == false, $this->userSavedExists , null),
+            'userCartExists'      => $this->when($this->userCartExists || $this->userCartExists == false, $this->userCartExists , null),
         ];
     }
 }

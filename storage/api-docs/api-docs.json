@@ -224,6 +224,24 @@
                         }
                     },
                     {
+                        "name": "text",
+                        "in": "query",
+                        "description": "Filter courses by name or teacher name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "semester",
+                        "in": "query",
+                        "description": "Filter courses by semester",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "perPage",
                         "in": "query",
                         "description": "Number of courses per page",
@@ -329,6 +347,128 @@
                 }
             }
         },
+        "/api/courses/{course}/sessions": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get sessions for a specific course",
+                "description": "Get the sessions associated with a specific course.",
+                "operationId": "0babb65b20579b2b3e7bb005aefcaf78",
+                "parameters": [
+                    {
+                        "name": "course",
+                        "in": "path",
+                        "description": "slug of the course to retrieve sessions for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userSaved",
+                        "in": "query",
+                        "description": "Filter sessions saved by the authenticated user",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CourseSessionResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    }
+                }
+            }
+        },
+        "/api/courses/{course}/save": {
+            "post": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Add a course to the user's saved list",
+                "description": "Add a course to the authenticated user's saved list.",
+                "operationId": "48e38feff707d58c0dcc105d4b77658c",
+                "parameters": [
+                    {
+                        "name": "course",
+                        "in": "path",
+                        "description": "The ID of the course to save",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Course successfully added to saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/courses/{course}/unsave": {
+            "delete": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Remove a course from the user's saved list",
+                "description": "Remove a course from the authenticated user's saved list.",
+                "operationId": "f4a15ebbde6b44be6fb97a5ff720cfb4",
+                "parameters": [
+                    {
+                        "name": "course",
+                        "in": "path",
+                        "description": "The ID of the course to unsave",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Course successfully removed from saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/courses/grouped-by-year": {
             "get": {
                 "tags": [
@@ -395,6 +535,236 @@
                     },
                     "404": {
                         "description": "Course session not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/courses/sessions/{courseSession}/save": {
+            "post": {
+                "tags": [
+                    "Course Sessions"
+                ],
+                "summary": "Add a course to the user's saved list",
+                "description": "Add a course to the authenticated user's saved list.",
+                "operationId": "5dfbbf1377c1791d72e812c1c137723b",
+                "parameters": [
+                    {
+                        "name": "courseSession",
+                        "in": "path",
+                        "description": "The ID of the course to save",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Course successfully added to saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/courses/sessions/{courseSession}/unsave": {
+            "delete": {
+                "tags": [
+                    "Course Sessions"
+                ],
+                "summary": "Remove a course from the user's saved list",
+                "description": "Remove a course from the authenticated user's saved list.",
+                "operationId": "7ebc906b7022a12d220ab87b852ed877",
+                "parameters": [
+                    {
+                        "name": "courseSession",
+                        "in": "path",
+                        "description": "The ID of the course to unsave",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Course successfully removed from saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/courses/sessions/{courseSession}/update-progress": {
+            "put": {
+                "tags": [
+                    "Course Sessions"
+                ],
+                "summary": "Update user progress for a course session",
+                "description": "Update the progress of the authenticated user for a specific course session.",
+                "operationId": "updateUserProgress",
+                "parameters": [
+                    {
+                        "name": "courseSession",
+                        "in": "path",
+                        "description": "ID of the course session",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "complete",
+                                    "lastTime"
+                                ],
+                                "properties": {
+                                    "complete": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "lastTime": {
+                                        "type": "integer",
+                                        "example": 120
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Progress successfully updated"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Course session not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/courses/sessions/{courseSession}": {
+            "get": {
+                "tags": [
+                    "Course Sessions"
+                ],
+                "summary": "Get details of a specific course session",
+                "description": "Retrieve details of a specific course session, including media and user progress if authenticated.",
+                "operationId": "getCourseSession",
+                "parameters": [
+                    {
+                        "name": "courseSession",
+                        "in": "path",
+                        "description": "ID of the course session",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseSessionResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course session not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/courses/sessions/{courseSession}/download/{media}": {
+            "post": {
+                "tags": [
+                    "Course Sessions"
+                ],
+                "summary": "Download the video associated with a specific course session",
+                "description": "Download the video file associated with a specific course session.",
+                "operationId": "downloadCourseSessionVideo",
+                "parameters": [
+                    {
+                        "name": "courseSession",
+                        "in": "path",
+                        "description": "ID of the course session",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "media",
+                        "in": "path",
+                        "description": "ID of the media file to download",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course session or video not found"
                     }
                 }
             }
@@ -516,6 +886,243 @@
                     "401": {
                         "description": "Unauthenticated"
                     }
+                }
+            }
+        },
+        "/api/orders": {
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Create a new order",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "d690d6834318e9b064df441e854de8b9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "courseId": {
+                                        "description": "ID of the course to order",
+                                        "type": "integer"
+                                    },
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Order created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/quizzes": {
+            "get": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Get a list of quizzes",
+                "description": "Display a listing of the resource.",
+                "operationId": "eb9ba15b35ba53ab91ba8b1a4e215e29",
+                "parameters": [
+                    {
+                        "name": "subjectId",
+                        "in": "query",
+                        "description": "The ID of the subject to filter quizzes by",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "userSaved",
+                        "in": "query",
+                        "description": "Filter quizzes saved by the authenticated user",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of quizzes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/QuizResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/quizzes/subjects": {
+            "get": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Get a list of quiz subjects",
+                "description": "Get quiz subjects.",
+                "operationId": "4a2d43fe13afd36d916f7ccf4f92ed7e",
+                "parameters": [
+                    {
+                        "name": "text",
+                        "in": "query",
+                        "description": "Filter subjects by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of quiz subjects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubjectResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/quizzes/{quiz}/questions": {
+            "get": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Get a list of questions for a quiz",
+                "description": "Get quiz questions.",
+                "operationId": "f1652f20b49e9b566c3745044fd820fb",
+                "parameters": [
+                    {
+                        "name": "quiz",
+                        "in": "path",
+                        "description": "The ID of the quiz",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of quiz questions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/QuestionResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Quiz not found"
+                    }
+                }
+            }
+        },
+        "/api/quizzes/{quiz}/save": {
+            "post": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Add a course to the user's saved list",
+                "description": "Add a course to the authenticated user's saved list.",
+                "operationId": "75bb549d2aca8950dee8b719d8921adb",
+                "parameters": [
+                    {
+                        "name": "quiz",
+                        "in": "path",
+                        "description": "The ID of the quiz to save",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Quiz successfully added to saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Quiz not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/quizzes/{quiz}/unsave": {
+            "delete": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Remove a course from the user's saved list",
+                "description": "Remove a course from the authenticated user's saved list.",
+                "operationId": "72dfad6dcc323e043e4df3e88ff0f952",
+                "parameters": [
+                    {
+                        "name": "quiz",
+                        "in": "path",
+                        "description": "The ID of the quiz to unsave",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Quiz successfully removed from saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Quiz not found"
+                    }
                 },
                 "security": [
                     {
@@ -572,8 +1179,193 @@
                     }
                 },
                 "responses": {
+                    "201": {
+                        "description": "Quiz stored successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StudentQuizResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/subjects/saved": {
+            "get": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Get the list of saved subjects",
+                "description": "Get the list of saved subjects for the authenticated user.",
+                "operationId": "36d55aff0122226eca1a59b5bbf1cae7",
+                "parameters": [
+                    {
+                        "name": "userSaved",
+                        "in": "query",
+                        "description": "Filter by user saved subjects",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of saved subjects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubjectResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/subject/{subject}/save": {
+            "post": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Add a course to the user's saved list",
+                "description": "Add a course to the authenticated user's saved list.",
+                "operationId": "77e38306cc4605599d123f5ae4df6a56",
+                "parameters": [
+                    {
+                        "name": "subject",
+                        "in": "path",
+                        "description": "The ID of the subject to save",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
                     "204": {
-                        "description": "Quiz stored successfully"
+                        "description": "Subject successfully added to saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Subject not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/subject/{subject}/unsave": {
+            "delete": {
+                "tags": [
+                    "Subjects"
+                ],
+                "summary": "Remove a course from the user's saved list",
+                "description": "Remove a course from the authenticated user's saved list.",
+                "operationId": "37e5bca94b58d810e1043204534a9433",
+                "parameters": [
+                    {
+                        "name": "subject",
+                        "in": "path",
+                        "description": "The ID of the subject to unsave",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Subject successfully removed from saved list"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Subject not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/universities": {
+            "get": {
+                "tags": [
+                    "Universities"
+                ],
+                "summary": "Get a list of universities",
+                "operationId": "64cf0609294f0945c7feb3404213d5ac",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UniversityResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update the authenticated user",
+                "description": "Update the details of the currently authenticated user.",
+                "operationId": "updateUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "User updated successfully"
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -628,7 +1420,7 @@
                         "type": "string",
                         "format": "email",
                         "maxLength": 255,
-                        "example": "user@example.com"
+                        "example": "student@example.com"
                     },
                     "phone": {
                         "description": "Required when email is not provided. Must be a valid phone number.",
@@ -770,7 +1562,91 @@
                     "timeTaked": {
                         "description": "The time taken to complete the quiz",
                         "type": "string",
-                        "format": "date-time"
+                        "format": "minute:seconds"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateUserProgressRequest": {
+                "title": "UpdateUserProgressRequest",
+                "description": "Request schema for updating user progress",
+                "required": [
+                    "complete"
+                ],
+                "properties": {
+                    "complete": {
+                        "description": "Indicates if the task is complete",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "lastTime": {
+                        "description": "The last recorded time in HH:MM format",
+                        "type": "string",
+                        "example": "12:30",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateUserRequest": {
+                "title": "UpdateUserRequest",
+                "description": "Request schema for updating user details",
+                "properties": {
+                    "name": {
+                        "description": "The name of the user",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
+                    },
+                    "email": {
+                        "description": "The email of the user",
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255,
+                        "minLength": 1
+                    },
+                    "phone": {
+                        "description": "The phone number of the user",
+                        "type": "string",
+                        "maxLength": 255,
+                        "minLength": 1
+                    },
+                    "student": {
+                        "description": "Student details",
+                        "properties": {
+                            "name": {
+                                "description": "The name of the student",
+                                "type": "string",
+                                "maxLength": 255,
+                                "minLength": 1
+                            },
+                            "studentNumber": {
+                                "description": "The student number",
+                                "type": "string",
+                                "maxLength": 255,
+                                "minLength": 1
+                            },
+                            "universityId": {
+                                "description": "The ID of the university",
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "gender": {
+                                "description": "The gender of the student",
+                                "type": "string",
+                                "enum": [
+                                    "male",
+                                    "female",
+                                    "other"
+                                ]
+                            },
+                            "birth": {
+                                "description": "The birth date of the student",
+                                "type": "string",
+                                "format": "date"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -950,6 +1826,14 @@
                         "description": "The number of dislikes for the course session",
                         "type": "integer"
                     },
+                    "type": {
+                        "description": "The type of the course session",
+                        "type": "string"
+                    },
+                    "isFree": {
+                        "description": "Indicates if the course session is free",
+                        "type": "boolean"
+                    },
                     "teacher": {
                         "$ref": "#/components/schemas/TeacherResource"
                     },
@@ -965,6 +1849,9 @@
                     },
                     "image": {
                         "$ref": "#/components/schemas/MediaResource"
+                    },
+                    "currentUserProgress": {
+                        "$ref": "#/components/schemas/UserProgressResource"
                     }
                 },
                 "type": "object"
@@ -1087,6 +1974,10 @@
                         "items": {
                             "$ref": "#/components/schemas/AnswerResource"
                         }
+                    },
+                    "note": {
+                        "description": "Additional notes or comments for the question",
+                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -1196,6 +2087,16 @@
                         "description": "The university associated with the subject",
                         "type": "object",
                         "nullable": true
+                    },
+                    "quizezCounts": {
+                        "description": "The count of quizzes associated with the subject",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "questionsCount": {
+                        "description": "The count of questions associated with the subject",
+                        "type": "integer",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -1236,6 +2137,41 @@
                     "coursesCount": {
                         "description": "The number of courses for the teacher",
                         "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UniversityResource": {
+                "title": "University Resource",
+                "description": "University resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier of the university",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "The name of the university",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserProgressResource": {
+                "title": "User Progress Resource",
+                "description": "User progress resource representation",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the user progress record",
+                        "type": "integer"
+                    },
+                    "complete": {
+                        "description": "Indicates if the user has completed the progress",
+                        "type": "boolean"
+                    },
+                    "lastTime": {
+                        "description": "The last time the user updated the progress",
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -1358,8 +2294,28 @@
             "description": "Course Sessions"
         },
         {
+            "name": "Orders",
+            "description": "Orders"
+        },
+        {
+            "name": "Quizzes",
+            "description": "Quizzes"
+        },
+        {
             "name": "Student Quizzes",
             "description": "Student Quizzes"
+        },
+        {
+            "name": "Subjects",
+            "description": "Subjects"
+        },
+        {
+            "name": "Universities",
+            "description": "Universities"
+        },
+        {
+            "name": "User",
+            "description": "User"
         }
     ]
 }

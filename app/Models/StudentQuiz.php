@@ -64,8 +64,8 @@ class StudentQuiz extends Model
      *
      * @return MorphTo<Quiz, StudentQuiz>
      */
-    public function quiz(): MorphTo
+    public function quizable(): MorphTo
     {
-        return $this->morphTo('quizable');
+        return $this->morphTo();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Subject;
 use App\Models\Question;
+use App\Models\UserSaved;
 use Carbon\CarbonInterface;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
@@ -86,5 +87,15 @@ class Quiz extends Model implements HasMedia
     public function questions() : MorphMany
     {
         return $this->morphMany(Question::class , 'quizable');
+    }
+
+    /**
+     * Get the user Saved associated with the quiz.
+     *
+     * @return MorphMany<UserSaved , self>
+     */
+    public function userSaved() : MorphMany
+    {
+        return $this->morphMany(UserSaved::class , 'saveable');
     }
 }

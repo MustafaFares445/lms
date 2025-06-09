@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\UserSaved;
 use Carbon\CarbonInterface;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -82,10 +84,20 @@ class Subject extends Model implements HasMedia
     /**
      * Get the quizzes associated with the subject.
      *
-     * @return MorphMany<Quiz, Subject>
+     * @return HasMany<Quiz, Subject>
      */
-    public function quizes(): MorphMany
+    public function quizzes(): HasMany
     {
-        return $this->morphMany(Quiz::class, 'model');
+        return $this->hasMany(Quiz::class);
+    }
+
+        /**
+     * Get the subjects associated with the course.
+     *
+     * @return MorphMany<UserSaved , self>
+     */
+    public function userSaved() : MorphMany
+    {
+        return $this->morphMany(UserSaved::class , 'saveable');
     }
 }

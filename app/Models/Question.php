@@ -35,6 +35,7 @@ class Question extends Model implements HasMedia
         'quizable_type',
         'type',
         'order',
+        'note'
     ];
 
     /**

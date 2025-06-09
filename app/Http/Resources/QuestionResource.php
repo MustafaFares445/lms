@@ -36,6 +36,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *         type="array",
  *         @OA\Items(ref="#/components/schemas/AnswerResource"),
  *         description="The answers associated with the question"
+ *     ),
+ *     @OA\Property(
+ *         property="note",
+ *         type="string",
+ *         description="Additional notes or comments for the question"
  *     )
  * )
  */
@@ -53,7 +58,8 @@ class QuestionResource extends JsonResource
             'title' => $this->title,
             'type' => $this->type,
             'media' => MediaResource::make($this->relationLoaded('media') ? $this->media()->first() : null),
-            'answers' => AnswerResource::collection($this->whenLoaded('answers'))
+            'answers' => AnswerResource::collection($this->whenLoaded('answers')),
+            'note' => $this->note,
         ];
     }
 }

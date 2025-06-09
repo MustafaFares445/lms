@@ -56,10 +56,11 @@ class StudentQuizResource extends JsonResource
         return [
             'id' => $this->id,
             'quiz' => $this->quizable_type == Quiz::class ? QuizResource::make($this->whenLoaded('quiz')) : null,
-            'courseQuiz' => $this->quizable_type == CourseSession::class  ? CourseSessionResource::make($this->quiz->load('course')) : null,
+            'courseQuiz' => $this->quizable_type == CourseSession::class  ? CourseSessionResource::make($this->quizable->load('course')) : null,
             'solvedQuestions' => $this->solved_questions,
             'totalQuestions' => $this->total_questions,
             'timeTaked' => $this->time_taked,
+            'createdAt' => $this->created_at->toDateTimeString()
         ];
     }
 }

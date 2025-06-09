@@ -11,19 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->morphs('quizable');
-            $table->enum('type', ["one","multi"])->default('one');
-            $table->smallInteger('order')->default(1);
+            $table->foreignId('user_id')->constrained('users')->references('id');
+            $table->foreignId('course_id')->constrained('courses')->references('id');
+            $table->enum('status' , ['pending' , 'rejected' , 'approved'])->default('pending');
             $table->text('note')->nullable();
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -31,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('orders');
     }
 };

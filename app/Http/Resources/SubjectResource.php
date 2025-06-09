@@ -41,6 +41,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *         type="object",
  *         description="The university associated with the subject",
  *         nullable=true
+ *     ),
+ *     @OA\Property(
+ *         property="quizezCounts",
+ *         type="integer",
+ *         description="The count of quizzes associated with the subject",
+ *         nullable=true
+ *     ),
+ *     @OA\Property(
+ *         property="questionsCount",
+ *         type="integer",
+ *         description="The count of questions associated with the subject",
+ *         nullable=true
  *     )
  * )
  */
@@ -60,6 +72,8 @@ class SubjectResource extends JsonResource
             'year' => $this->year,
             'semester' => $this->semester,
             'university' => $this->whenLoaded('university'),
+            'quizezCounts' => $this->whenCounted('quizzes'),
+            'questionsCount' => $this->when($this->questions_count || $this->questions_count == 0 , $this->questions_count),
         ];
     }
 }

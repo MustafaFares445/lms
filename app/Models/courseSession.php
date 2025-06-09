@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\UserSaved;
+use App\Models\UserProgress;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class CourseSession
@@ -39,7 +43,8 @@ class CourseSession extends Model implements HasMedia
         'time',
         'like',
         'dislike',
-        'order'
+        'order',
+        'isFree'
     ];
 
     /**
@@ -73,5 +78,36 @@ class CourseSession extends Model implements HasMedia
     public function questions() : MorphMany
     {
         return $this->morphMany(Question::class , 'quizable');
+    }
+
+    /**
+     * Get the user Saved associated with the course Session.
+     *
+     * @return MorphMany<UserSaved , self>
+     */
+    public function userSaved() : MorphMany
+    {
+        return $this->morphMany(UserSaved::class , 'saveable');
+    }
+
+    /**
+     * Get the user progress associated with the course Session.
+     *
+     * @return MorphMany<UserProgress, self>
+     */
+    public function userProgress(): MorphMany
+    {
+        return $this->morphMany(UserProgress::class, 'relatable');
+    }
+
+    /**
+     * Get the current authenticated user's progress for this session.
+     *
+     * @return MorphOne<UserProgress, self>
+     */
+    public function currentUserProgress(): MorphOne
+    {
+        return $this->morphOne(UserProgress::class, 'relatable')
+                    ->where('user_id', Auth::id());
     }
 }

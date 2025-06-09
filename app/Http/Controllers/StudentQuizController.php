@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Quiz;
 use App\Models\StudentQuiz;
-use Illuminate\Http\Request;
 use App\Models\CourseSession;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\StudentQuizResource;
@@ -37,7 +36,7 @@ class StudentQuizController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $studentQuizez = StudentQuiz::with('quiz')
+        $studentQuizez = StudentQuiz::with('quizable')
             ->where('student_id' , $user->student->id)
             ->get();
 
@@ -55,8 +54,9 @@ class StudentQuizController extends Controller
      *         @OA\JsonContent(ref="#/components/schemas/StoreStudentQuizRequest")
      *     ),
      *     @OA\Response(
-     *         response=204,
-     *         description="Quiz stored successfully"
+     *         response=201,
+     *         description="Quiz stored successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/StudentQuizResource")
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -79,10 +79,10 @@ class StudentQuizController extends Controller
             $quiz = CourseSession::query()->find($request->input('quizId'));
         }
 
-         /** @var User $user */
-         $user = Auth::user();
+        /** @var User $user */
+        $user = Auth::user();
 
-        StudentQuiz::query()->create(array_merge(
+        $studentQuizez = StudentQuiz::query()->create(array_merge(
             $request->validated(),[
                 'total_questions' =>  $quiz->questions()->count(),
                 'quizable_type' => get_class($quiz),
@@ -91,7 +91,6 @@ class StudentQuizController extends Controller
             ]
         ));
 
-        return response()->noContent();
+        return StudentQuizResource::make($studentQuizez->load('quizable'));
     }
-
 }

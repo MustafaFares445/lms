@@ -28,7 +28,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *     @OA\Property(
  *         property="timeTaked",
  *         type="string",
- *         format="date-time",
+ *         format="minute:seconds",
  *         description="The time taken to complete the quiz"
  *     )
  * )
@@ -56,7 +56,7 @@ class StoreStudentQuizRequest extends FormRequest
             'quizId' => 'required|integer',
             'quizType' => 'required|string|in:quiz,courseSession',
             'solvedQuestions' => 'required|integer',
-            'timeTaked' => 'required|date',
+            'timeTaked' => ['required', 'regex:/^\d{1,2}:\d{2}$/'], // Validate minute:seconds format
         ];
     }
 
@@ -64,7 +64,7 @@ class StoreStudentQuizRequest extends FormRequest
     {
         return [
             'solved_questions' => $this->input('solvedQuestions'),
-            'time_taked' => $this->input('timeTaked'),
+            'time_taked' => $this->input('timeTaked'), // Ensure the format is minute:seconds
         ];
     }
 }
